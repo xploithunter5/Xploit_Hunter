@@ -40,7 +40,7 @@ Xploit Hunter simplifies complex manual tasks with a single-click interface:
 
 | Splash Screen | Main Interface |
 | :---: | :---: |
-| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Screenshot_20260120-001547.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Screenshot_20260120-001551.png?raw=true" width="280"> |
+| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
 
 ---
 
