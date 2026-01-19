@@ -1,9 +1,9 @@
-# Xploit Hunter v1.1
+# 🛡️ Xploit Hunter v1.1
 
 <p align="center">
   <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.png?raw=true" width="180" alt="Xploit Hunter Logo">
   <br>
-  <b>Professional Mobile Web Penetration Testing Suite</b>
+  <b>The Ultimate Mobile Web Penetration Testing Suite</b>
   <br><br>
   <a href="https://github.com/xploithunter5/Xploit_Hunter/raw/main/Xploit_Hunter.apk">
     <img src="https://img.shields.io/badge/Direct_Download-APK-brightgreen?style=for-the-badge&logo=android" alt="Download APK">
@@ -11,59 +11,68 @@
   <br>
   <img src="https://img.shields.io/github/downloads/xploithunter5/Xploit_Hunter/total?style=flat-square&color=blue" alt="Total Downloads">
   <img src="https://img.shields.io/github/v/release/xploithunter5/Xploit_Hunter?style=flat-square&color=orange" alt="Latest Version">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square" alt="Status">
 </p>
 
 ---
 
 ## 📖 Introduction
-**Xploit Hunter** is a powerful, mobile-first security tool designed for web auditors and ethical hackers. It functions as an advanced "Hackbar" for Android, allowing you to perform SQL injection testing, WAF bypassing, and site analysis on the go.
+**Xploit Hunter** is a professional-grade Android application designed for security researchers. It provides a specialized environment to audit web applications, bypass firewalls (WAF), and test for injection vulnerabilities directly from your mobile device.
 
-## 🛡️ Disclaimer
-> [!IMPORTANT]
-> This tool is built for **ethical web penetration testing** and **learning purposes only**. The developers do not support illegal activities. Users are strictly responsible for their own actions. **Only test on systems where you have explicit permission.**
-
----
-
-## ✨ Features
-
-Xploit Hunter provides a comprehensive toolkit to simplify manual injection tasks:
-
-* **SQLi Automation:** Instant tools for `Column Count`, `Union Statements`, and `Basic Statements`.
-* **Bypass Engines:** Advanced modules for `WAF Bypass`, `Order By Bypass`, and `Union Select Bypass`.
-* **Data Discovery:** Integrated `Dios` (Data in One Shot) functionality.
-* **Request Manipulation:** Toggle `Post Data` and `Tamper Data` to modify HTTP requests in real-time.
-* **Source Code Tools:** Built-in `View Source` and `JavaScript` console for deep-dive analysis.
-* **Administrative Tools:** Integrated `Admin Finder` and `SQLi Scanner`.
+> [!WARNING]
+> **Ethical Use Only:** This tool is for authorized security testing. Unauthorized use against systems is illegal.
 
 ---
 
-## 📸 Screenshots
+## 🛠️ Technical Capabilities
 
-| Splash Screen | Main Interface |
+| Category | Supported Features |
+| :--- | :--- |
+| **SQL Injection** | Union Based, Error Based, Order By, Column Counting |
+| **Bypass Engines** | WAF Bypass, Union Select Bypass, Char/Hex Encoding |
+| **Request Tools** | GET/POST Tampering, Custom Header Injection |
+| **Automation** | Admin Panel Finder, SQLi Vulnerability Scanner |
+| **Analysis** | JS Console, Source Code Viewer, Cookie Manager |
+
+---
+
+## ✨ Why Xploit Hunter?
+
+* 📱 **Mobile Optimized:** No need for a laptop; perform audits from anywhere.
+* ⚡ **One-Tap Payloads:** Automated string generation for complex SQLi queries.
+* 🛡️ **WAF Evasion:** Pre-configured bypass strings for modern Web Application Firewalls.
+* 🔍 **Deep Discovery:** Find hidden admin panels that standard scanners miss.
+
+---
+
+## 📸 Interface Preview
+
+| Splash Screen | Main Dashboard |
 | :---: | :---: |
 | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
 
 ---
 
-## 🚀 Installation
-
-1.  **Download:** Click the **Direct Download APK** button at the top of this page.
-2.  **Permissions:** Allow "Installation from Unknown Sources" in your Android settings.
-3.  **Install:** Open the `Xploit_Hunter.apk` and tap install.
-4.  **Launch:** Enter your target URL and begin your security audit.
-
----
-
-## 📈 Changelog (v1.1)
-
-* ✅ **Website Compatibility:** Fixed foreground content not showing on specific modern websites.
-* ✅ **Stability:** Resolved crashes in `Tamper Data` and `No Redirect` modules.
-* ✅ **JavaScript Fixes:** Patched bugs in the View Source tool.
-* ✅ **Scanner Accuracy:** Fixed result reporting issues in `Admin Finder` and `SQLi Scanner`.
+## 🚀 Quick Start
+1. **Download APK:** Use the button above to get the latest `v1.1`.
+2. **Setup:** Enable "Unknown Sources" in Android Settings.
+3. **Audit:** - Enter URL (e.g., `http://testsite.com/php?id=1`)
+    - Click **Column Count** to start discovery.
+    - Use **WAF Bypass** if the server blocks your request.
 
 ---
 
-## 👥 Credits
+## 📈 Recent Updates (v1.1)
+- 🚀 **Performance:** Faster rendering of foreground web content.
+- 🛠️ **Stability:** Fixed crash loop in `Tamper Data` mode.
+- 🛡️ **Scanner:** Updated Admin Finder database for 2026 CMS structures.
+
+---
+
+## 🤝 Community & Support
+- **Report Bugs:** Open an "Issue" on this repository.
+- **Contributions:** Pull requests are welcome for new bypass payloads.
+
 **Developed by Team Xploit Hunter**
 
 ---
