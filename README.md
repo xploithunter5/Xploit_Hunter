@@ -1,6 +1,8 @@
 # Xploit Hunter v1.1
 
-![Xploit Hunter Logo](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/Screenshot_20260120-001547.png)
+<p align="center">
+  <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.png?raw=true" width="200" alt="Xploit Hunter Logo">
+</p>
 
 **Xploit Hunter** is a powerful, mobile-friendly web penetration testing tool designed to streamline security audits and SQL injection testing. Inspired by professional browser-based hackbars, it provides a comprehensive suite of automated functions for ethical hackers and security researchers.
 
@@ -38,16 +40,16 @@ Xploit Hunter simplifies complex manual tasks with a single-click interface:
 
 | Splash Screen | Main Interface |
 | :---: | :---: |
-| <img src="Screenshot_20260120-001547.png" width="280"> | <img src="Screenshot_20260120-001551.png" width="280"> |
+| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Screenshot_20260120-001547.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Screenshot_20260120-001551.png?raw=true" width="280"> |
 
 ---
 
 ## 🚀 How To Use
 
-1.  **Enter URL:** Paste your target URL into the input field at the top.
-2.  **Select Method:** Choose a function (e.g., `Column Count` or `WAF Bypass`).
-3.  **Execute:** Tap the **Execute** button to run the payload.
-4.  **Analyze:** Use the **View Source** or **Console** features to inspect the server response.
+1. **Enter URL:** Paste your target URL into the input field at the top.
+2. **Select Method:** Choose a function (e.g., `Column Count` or `WAF Bypass`).
+3. **Execute:** Tap the **Execute** button to run the payload.
+4. **Analyze:** Use the **View Source** or **Console** features to inspect the server response.
 
 ---
 
@@ -56,4 +58,3 @@ Xploit Hunter simplifies complex manual tasks with a single-click interface:
 Developed with ❤️ by **Team Xploit Hunter**.
 
 ---
-
