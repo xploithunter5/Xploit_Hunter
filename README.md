@@ -3,61 +3,67 @@
 <p align="center">
   <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.png?raw=true" width="180" alt="Xploit Hunter Logo">
   <br>
-  <b>Mobile Web Penetration Testing Suite</b>
-</p>
-
-<p align="center">
+  <b>Professional Mobile Web Penetration Testing Suite</b>
+  <br><br>
   <a href="https://github.com/xploithunter5/Xploit_Hunter/raw/main/Xploit_Hunter.apk">
     <img src="https://img.shields.io/badge/Direct_Download-APK-brightgreen?style=for-the-badge&logo=android" alt="Download APK">
   </a>
+  <br>
+  <img src="https://img.shields.io/github/downloads/xploithunter5/Xploit_Hunter/total?style=flat-square&color=blue" alt="Total Downloads">
+  <img src="https://img.shields.io/github/v/release/xploithunter5/Xploit_Hunter?style=flat-square&color=orange" alt="Latest Version">
 </p>
 
 ---
 
 ## 📖 Introduction
-**Xploit Hunter** is a professional-grade mobile application designed for security researchers and ethical hackers. It functions as an advanced "Hackbar," allowing users to perform web audits, test for SQL injections, and bypass common web filters directly from their Android devices.
+**Xploit Hunter** is a powerful, mobile-first security tool designed for web auditors and ethical hackers. It functions as an advanced "Hackbar" for Android, allowing you to perform SQL injection testing, WAF bypassing, and site analysis on the go.
 
 ## 🛡️ Disclaimer
 > [!IMPORTANT]
-> This tool is intended for **educational purposes** and **authorized penetration testing** only. The developers of Xploit Hunter are not responsible for any misuse or damage caused by this application. Always act within legal and ethical boundaries.
+> This tool is built for **ethical web penetration testing** and **learning purposes only**. The developers do not support illegal activities. Users are strictly responsible for their own actions. **Only test on systems where you have explicit permission.**
 
 ---
 
 ## ✨ Features
-* **SQLi Toolkit:** Automated `Column Count`, `Union Statements`, and `Basic Statements`.
-* **Advanced Bypassing:** Built-in modules for `WAF Bypass`, `Order By Bypass`, and `Union Select Bypass`.
-* **Data Extraction:** High-speed `Dios` (Data in One Shot) for efficient testing.
-* **Request Control:** Intercept and modify data with `Post Data` and `Tamper Data` toggles.
-* **Source Inspection:** View website source code and debug with integrated `JavaScript` tools.
-* **Scanners:** Integrated `Admin Finder` and `SQLi Vulnerability Scanner`.
 
----
+Xploit Hunter provides a comprehensive toolkit to simplify manual injection tasks:
 
-## 🚀 Installation & Usage
-1.  **Download:** Click the **Direct Download APK** button above.
-2.  **Install:** Open the downloaded `.apk` file (Ensure "Unknown Sources" is enabled in settings).
-3.  **Target:** Enter the target URL in the top input bar.
-4.  **Execute:** Choose your injection method and tap **Execute**.
+* **SQLi Automation:** Instant tools for `Column Count`, `Union Statements`, and `Basic Statements`.
+* **Bypass Engines:** Advanced modules for `WAF Bypass`, `Order By Bypass`, and `Union Select Bypass`.
+* **Data Discovery:** Integrated `Dios` (Data in One Shot) functionality.
+* **Request Manipulation:** Toggle `Post Data` and `Tamper Data` to modify HTTP requests in real-time.
+* **Source Code Tools:** Built-in `View Source` and `JavaScript` console for deep-dive analysis.
+* **Administrative Tools:** Integrated `Admin Finder` and `SQLi Scanner`.
 
 ---
 
 ## 📸 Screenshots
 
-| Splash Screen | Main Dashboard |
+| Splash Screen | Main Interface |
 | :---: | :---: |
-| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="250"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="250"> |
+| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
+
+---
+
+## 🚀 Installation
+
+1.  **Download:** Click the **Direct Download APK** button at the top of this page.
+2.  **Permissions:** Allow "Installation from Unknown Sources" in your Android settings.
+3.  **Install:** Open the `Xploit_Hunter.apk` and tap install.
+4.  **Launch:** Enter your target URL and begin your security audit.
 
 ---
 
 ## 📈 Changelog (v1.1)
-* ✅ **Fix:** Improved foreground content visibility on modern web layouts.
-* ✅ **Fix:** Patched crash issues in `Tamper Data` and `No Redirect` modules.
-* ✅ **Fix:** JavaScript View Source rendering bugs resolved.
-* ✅ **Fix:** Improved accuracy for Admin Finder and SQLi Scanner results.
+
+* ✅ **Website Compatibility:** Fixed foreground content not showing on specific modern websites.
+* ✅ **Stability:** Resolved crashes in `Tamper Data` and `No Redirect` modules.
+* ✅ **JavaScript Fixes:** Patched bugs in the View Source tool.
+* ✅ **Scanner Accuracy:** Fixed result reporting issues in `Admin Finder` and `SQLi Scanner`.
 
 ---
 
 ## 👥 Credits
-Developed with ❤️ by **Team Xploit Hunter**.
+**Developed by Team Xploit Hunter**
 
 ---
