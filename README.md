@@ -4,6 +4,12 @@
   <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.png?raw=true" width="200" alt="Xploit Hunter Logo">
 </p>
 
+<p align="center">
+  <a href="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.apk?raw=true">
+    <img src="https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android" alt="Download APK">
+  </a>
+</p>
+
 **Xploit Hunter** is a powerful, mobile-friendly web penetration testing tool designed to streamline security audits and SQL injection testing. Inspired by professional browser-based hackbars, it provides a comprehensive suite of automated functions for ethical hackers and security researchers.
 
 ---
@@ -27,6 +33,15 @@ Xploit Hunter simplifies complex manual tasks with a single-click interface:
 
 ---
 
+## 📦 Installation
+
+1. **Download:** Click the **Download APK** button above or find the file in the repository.
+2. **Permissions:** Ensure you have "Install from Unknown Sources" enabled in your Android settings.
+3. **Install:** Open the `.apk` file and follow the prompts.
+4. **Launch:** Open **Xploit Hunter** and start your ethical testing.
+
+---
+
 ## 📈 v1.1 Changelog
 
 * **Improved:** Foreground content rendering on various web architectures.
@@ -41,15 +56,6 @@ Xploit Hunter simplifies complex manual tasks with a single-click interface:
 | Splash Screen | Main Interface |
 | :---: | :---: |
 | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
-
----
-
-## 🚀 How To Use
-
-1. **Enter URL:** Paste your target URL into the input field at the top.
-2. **Select Method:** Choose a function (e.g., `Column Count` or `WAF Bypass`).
-3. **Execute:** Tap the **Execute** button to run the payload.
-4. **Analyze:** Use the **View Source** or **Console** features to inspect the server response.
 
 ---
 
