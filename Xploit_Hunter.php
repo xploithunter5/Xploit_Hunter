@@ -434,10 +434,10 @@ if (isset($_GET['action'])) {
             break;
         case 'delete':
             $file_to_delete = $_GET['target_file'];
-            echo "<h3>Konfirmasi Hapus: ".htmlspecialchars(basename($file_to_delete))."</h3>";
+            echo "<h3>Confirm Delete: ".htmlspecialchars(basename($file_to_delete))."</h3>";
             if (file_exists($file_to_delete)) {
                 echo '<p style="color:red;text-align:center;">Are you SURE you want to delete this item?<br>This action cannot be undone.</p>';
-                echo '<form method="POST" action="?option=true&path='.urlencode($path).'"><input type="hidden" name="path_target" value="'.htmlspecialchars($file_to_delete).'"><input type="hidden" name="opt_action" value="delete"><input type="submit" value="YA, HAPUS" style="background:red;color:white;"/> <a href="?path='.urlencode($path).'" style="margin-left:10px;">BATAL</a></form>';
+                echo '<form method="POST" action="?option=true&path='.urlencode($path).'"><input type="hidden" name="path_target" value="'.htmlspecialchars($file_to_delete).'"><input type="hidden" name="opt_action" value="delete"><input type="submit" value="Yes, Delete" style="background:red;color:white;"/> <a href="?path='.urlencode($path).'" style="margin-left:10px;">Cancel</a></form>';
             } else {
                 echo '<p style="color:red;text-align:center;">File or folder not found!</p>';
             }
