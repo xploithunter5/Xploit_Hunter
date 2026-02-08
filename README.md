@@ -54,7 +54,7 @@
 ---
 
 ## 🚀 Quick Start
-1. **Download APK:** Use the button above to get the latest `v1.1`.
+1. **Download APK:** Use the button above to get the latest `v1.4`.
 2. **Setup:** Enable "Unknown Sources" in Android Settings.
 3. **Audit:** - Enter URL (e.g., `http://testsite.com/php?id=1`)
     - Click **Column Count** to start discovery.
