@@ -1,4 +1,4 @@
-# 🛡️ Xploit Hunter v1.1
+# 🛡️ Xploit Hunter v1.4
 
 <p align="center">
   <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/Xploit_Hunter.png?raw=true" width="180" alt="Xploit Hunter Logo">
@@ -62,7 +62,7 @@
 
 ---
 
-## 📈 Recent Updates (v1.1)
+## 📈 Recent Updates (v1.4)
 - 🚀 **Performance:** Faster rendering of foreground web content.
 - 🛠️ **Stability:** Fixed crash loop in `Tamper Data` mode.
 - 🛡️ **Scanner:** Updated Admin Finder database for 2026 CMS structures.
