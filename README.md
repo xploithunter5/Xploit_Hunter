@@ -49,7 +49,7 @@
 
 | Splash Screen | Main Dashboard |
 | :---: | :---: |
-| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/front.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
+| <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/splashscreen.png?raw=true" width="280"> | <img src="https://github.com/xploithunter5/Xploit_Hunter/blob/main/interface.png?raw=true" width="280"> |
 
 ---
 
